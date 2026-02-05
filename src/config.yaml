@@ -1,0 +1,205 @@
+# Configuration pour la génération de données synthétiques
+# Démo Microsoft Fabric - IT Ops & FinOps
+
+# Seed pour la reproductibilité
+seed: 42
+
+# Volumes de données
+volumes:
+  subscriptions: 8
+  environments: 15
+  workloads: 120
+  business_units: 6
+  teams: 30
+  applications: 60
+
+# Période de génération (ISO 8601)
+date_range:
+  start: "2025-02-01"  # 12 mois de données
+  end: "2026-01-31"
+
+# Paramètres métier - Subscriptions Azure
+subscriptions:
+  types:
+    - name: "dev"
+      count: 2
+      description: "Environnements de développement"
+    - name: "test"
+      count: 2
+      description: "Environnements de test/UAT"
+    - name: "prod"
+      count: 3
+      description: "Production (par niveau de criticité)"
+    - name: "shared"
+      count: 1
+      description: "Services partagés (monitoring, logs)"
+
+# Paramètres métier - Environments
+environments:
+  by_type:
+    production:
+      count: 5
+      names: ["prod-critical", "prod-standard", "prod-low", "prod-dr", "prod-backup"]
+      cost_multiplier: 3.0
+    preproduction:
+      count: 3
+      names: ["preprod", "staging", "uat"]
+      cost_multiplier: 1.5
+    development:
+      count: 5
+      names: ["dev-team1", "dev-team2", "dev-shared", "integration", "perf-test"]
+      cost_multiplier: 1.0
+    sandbox:
+      count: 2
+      names: ["sandbox-innovation", "sandbox-poc"]
+      cost_multiplier: 0.5
+
+# Paramètres métier - Workloads
+workloads:
+  types:
+    fabric_capacity:
+      percentage: 40
+      capacity_units_range: [2, 128]  # F2 à F128
+      cost_per_cu_per_day: 8.0
+    azure_vm:
+      percentage: 25
+      vcpu_range: [2, 64]
+      cost_per_vcpu_per_hour: 0.15
+    azure_storage:
+      percentage: 15
+      storage_gb_range: [100, 50000]
+      cost_per_gb_per_month: 0.03
+    azure_sql:
+      percentage: 10
+      db_size_range: [10, 5000]  # GB
+      cost_per_db_per_day: 10.0
+    azure_functions:
+      percentage: 10
+      executions_per_day_range: [1000, 10000000]
+      cost_per_million_executions: 0.20
+
+  # Distribution par environnement
+  distribution:
+    production: 0.50
+    preproduction: 0.20
+    development: 0.25
+    sandbox: 0.05
+
+# Paramètres métier - Usage Metrics
+usage_metrics:
+  # Patterns temporels
+  weekday_usage:
+    cpu_range: [60, 90]
+    memory_range: [50, 85]
+  weekend_usage:
+    cpu_range: [20, 40]
+    memory_range: [30, 50]
+  night_usage:  # 22h-6h
+    cpu_range: [10, 30]
+    memory_range: [20, 40]
+
+  # Tendances annuelles
+  growth_trend:
+    avg_monthly_growth: 0.015  # +1.5% par mois en moyenne
+    std_dev: 0.005
+
+  # Anomalies réalistes
+  anomalies:
+    over_provisioned_percentage: 0.20  # 20% des workloads surdimensionnés
+    zombie_percentage: 0.05  # 5% avec usage très faible
+    spike_probability: 0.03  # 3% de chance de pic quotidien
+
+  # Ratios réalistes
+  storage_usage_ratio: 0.70  # En moyenne 70% du storage provisionné
+  query_count_factor: 1000  # Multiplicateur pour nombre de queries
+
+# Paramètres métier - Cloud Costs
+cloud_costs:
+  # Pricing Azure (simplifié pour démo)
+  pricing:
+    fabric_cu_per_day: 8.0  # $8/CU/jour
+    vm_vcpu_per_hour: 0.15  # $0.15/vCPU/heure
+    storage_gb_per_month: 0.03  # $0.03/GB/mois
+    sql_base_per_day: 10.0  # $10/DB/jour + variable
+    functions_per_million: 0.20  # $0.20/million executions
+
+  # Facteurs de coût par environnement
+  environment_cost_multiplier:
+    production: 3.0  # HA, redondance, backup
+    preproduction: 1.5
+    development: 1.0
+    sandbox: 0.5
+
+  # Facteurs de coût par criticité
+  criticality_multiplier:
+    critical: 2.0
+    standard: 1.0
+    low: 0.7
+
+  # Simulation de dérive de coûts (pour scénario démo)
+  cost_drift:
+    baseline_growth: 0.02  # +2% par mois (organique)
+    january_2026_spike: 0.35  # +35% en janvier (pour démo)
+    spike_workloads_count: 5  # Nombre de workloads responsables du pic
+
+# Paramètres métier - Business Units
+business_units:
+  units:
+    - code: "BU_01"
+      name: "Sales"
+      team_count: 5
+      budget_monthly_usd: 50000
+    - code: "BU_02"
+      name: "Marketing"
+      team_count: 5
+      budget_monthly_usd: 35000
+    - code: "BU_03"
+      name: "Finance"
+      team_count: 5
+      budget_monthly_usd: 40000
+    - code: "BU_04"
+      name: "IT"
+      team_count: 5
+      budget_monthly_usd: 60000
+    - code: "BU_05"
+      name: "HR"
+      team_count: 5
+      budget_monthly_usd: 25000
+    - code: "BU_06"
+      name: "Operations"
+      team_count: 5
+      budget_monthly_usd: 45000
+
+# Paramètres métier - Teams
+teams:
+  budget_range: [5000, 50000]  # Budget mensuel par team ($)
+  size_range: [5, 50]  # Nombre de membres
+  applications_per_team: 2  # Moyenne
+
+# Paramètres métier - Applications
+applications:
+  active_users_range: [10, 500]
+  workloads_per_app_range: [1, 3]
+  
+  # Types d'applications
+  types:
+    - "CRM"
+    - "ERP"
+    - "Analytics Dashboard"
+    - "Data Pipeline"
+    - "Web Application"
+    - "Mobile Backend"
+    - "API Gateway"
+    - "Reporting Tool"
+    - "Monitoring Platform"
+    - "ML/AI Workload"
+
+# Sortie
+output:
+  format: "csv"
+  encoding: "utf-8"
+  separator: ","
+  decimal: "."
+  date_format: "%Y-%m-%d"
+  datetime_format: "%Y-%m-%d %H:%M:%S"
+  output_dir: "../data/raw"

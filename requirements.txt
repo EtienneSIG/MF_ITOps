@@ -1,0 +1,18 @@
+# Dependencies pour la génération de données synthétiques
+# Démo Microsoft Fabric - IT Ops & FinOps
+
+# Génération de données fictives
+Faker==22.6.0
+
+# Manipulation de données
+pandas==2.2.0
+numpy==1.26.3
+
+# Configuration
+PyYAML==6.0.1
+
+# Dates et temps
+python-dateutil==2.8.2
+
+# Validation de schéma (optionnel)
+jsonschema==4.21.1
