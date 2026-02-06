@@ -202,4 +202,4 @@ output:
   decimal: "."
   date_format: "%Y-%m-%d"
   datetime_format: "%Y-%m-%d %H:%M:%S"
-  output_dir: "../data/raw"
+  output_dir: "data/raw"
