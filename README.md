@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > Démo complète de **Microsoft Fabric** avec OneLake, Modèle Sémantique FinOps, et Fabric Data Agent pour expliquer les coûts IT et leur valeur business.
-
+ 
 ---
 
 ## 🎯 Objectif de la Démo
